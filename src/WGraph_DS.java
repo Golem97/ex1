@@ -206,20 +206,23 @@ public class WGraph_DS implements weighted_graph , Serializable {
     @Override
     public void connect(int node1, int node2, double w) {
 
-        NodeInfo n1= (NodeInfo) this.hash_graph.get(node1);
+
+        NodeInfo n1=  (NodeInfo) this.hash_graph.get(node1);
         NodeInfo n2 = (NodeInfo) this.hash_graph.get(node2);
 
+        if (hasEdge(node1,node2)&&getEdge(node1,node2) != w){
+            this.hash_edges.get(node1).put(node2,w);                  //Add to my List of Edge Node1  the edges between N1 and N2
+            this.hash_edges.get(node2).put(node1,w);
+            mc++;
+
+        }
 
         if(this.hash_graph.get(node1)!=null  &&  this.hash_graph.get(node2)!=null        //Null Node
         && node1!=node2                                                                  //Node 1 = Node2
         && !hasEdge(node1,node2)                                                         //Already an edge exist
-        && this.hash_graph.containsKey(node1) && this.hash_graph.containsKey(node2))  //The Graph contain the 2 Nodes
+        && this.hash_graph.containsKey(node1) && this.hash_graph.containsKey(node2))     //The Graph contain the 2 Nodes
 
         {
-            if(hasEdge(node1,node2)                                     //if there is already an edge
-                    && (getEdge(node1,node2) != w)){
-                mc++;
-            }
 
             n1.hash_node.put(node2,n2);                        //Add n2 to n1's neighbour list .
             n2.hash_node.put(node1,n1);                        //Add n1 to n2's neighbour list .
